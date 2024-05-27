@@ -67,6 +67,26 @@ public class UserControllerTest {
         assertEquals(400, response.getStatusCodeValue());
     }
 
+    @Test
+    public void testFindUser() {
+        // arrange
+        CreateUserRequest userRequest = createUserRequest();
+        when(bCryptPasswordEncoder.encode(userRequest.getPassword())).thenReturn("hashedPassword");
+        User user = userController.createUser(userRequest).getBody();
+
+        // test findById
+        ResponseEntity<User> response = userController.findById(user.getId());
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(user.getUsername(), response.getBody().getUsername());
+
+        // test findByUserName
+        response = userController.findByUserName(user.getUsername());
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(user.getId(), response.getBody().getId());
+    }
+
     private static CreateUserRequest createUserRequest() {
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setUsername("Benny Test");
