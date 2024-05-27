@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
@@ -27,6 +28,7 @@ public class UserControllerTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Test
+    @DirtiesContext
     public void testCreateUserSuccess() {
         // arrange
         CreateUserRequest userRequest = createUserRequest();
@@ -45,6 +47,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DirtiesContext
     public void testCreateUserPasswordMismatch() {
         CreateUserRequest userRequest = createUserRequest();
         userRequest.setConfirmPassword("4321dcba");
@@ -56,6 +59,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DirtiesContext
     public void testCreateUserPasswordTooShort() {
         CreateUserRequest userRequest = createUserRequest();
         userRequest.setPassword("abc");
@@ -68,6 +72,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @DirtiesContext
     public void testFindUser() {
         // arrange
         CreateUserRequest userRequest = createUserRequest();
