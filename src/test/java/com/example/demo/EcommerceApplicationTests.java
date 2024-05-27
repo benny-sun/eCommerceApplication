@@ -1,16 +1,20 @@
 package com.example.demo;
 
-import org.junit.Test;
+import com.example.demo.controllers.CartControllerTest;
+import com.example.demo.controllers.ItemControllerTest;
+import com.example.demo.controllers.OrderControllerTest;
+import com.example.demo.controllers.UserControllerTest;
+import com.example.demo.security.JwtAuthTest;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.runners.Suite;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+		JwtAuthTest.class,
+		UserControllerTest.class,
+		CartControllerTest.class,
+		ItemControllerTest.class,
+		OrderControllerTest.class
+})
 public class EcommerceApplicationTests {
-
-	@Test
-	public void contextLoads() {
-	}
-
 }
