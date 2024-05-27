@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
@@ -39,7 +40,7 @@ public class UserControllerTest {
 
         // assert
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         User user = response.getBody();
         assertNotNull(user);
         assertEquals(userRequest.getUsername(), user.getUsername());
@@ -55,7 +56,7 @@ public class UserControllerTest {
         ResponseEntity<User> response = userController.createUser(userRequest);
 
         assertNotNull(response);
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Test
@@ -68,7 +69,7 @@ public class UserControllerTest {
         ResponseEntity<User> response = userController.createUser(userRequest);
 
         assertNotNull(response);
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Test
@@ -82,13 +83,13 @@ public class UserControllerTest {
         // test findById
         ResponseEntity<User> response = userController.findById(user.getId());
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(user.getUsername(), response.getBody().getUsername());
 
         // test findByUserName
         response = userController.findByUserName(user.getUsername());
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(user.getId(), response.getBody().getId());
     }
 
