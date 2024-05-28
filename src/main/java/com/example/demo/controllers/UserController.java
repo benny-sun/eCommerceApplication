@@ -1,6 +1,9 @@
 package com.example.demo.controllers;
 
 
+import com.example.demo.EcommerceApplication;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,6 +28,8 @@ public class UserController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	private static final Logger log = LogManager.getLogger(EcommerceApplication.class);
+
 	@GetMapping("/id/{id}")
 	public ResponseEntity<User> findById(@PathVariable Long id) {
 		return ResponseEntity.of(userRepository.findById(id));
@@ -44,10 +49,12 @@ public class UserController {
 		user.setCart(cart);
 		if(createUserRequest.getPassword().length() < 7 ||
 			!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())){
+			log.info("User Creation Failure");
 			return ResponseEntity.badRequest().build();
 		}
 		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 		userRepository.save(user);
+		log.info("User Creation Success");
 		return ResponseEntity.ok(user);
 	}
 	
