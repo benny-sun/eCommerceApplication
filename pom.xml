@@ -102,6 +102,7 @@
                 		<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>ec-app-demo</finalName>
 	</build>
 
 </project>
