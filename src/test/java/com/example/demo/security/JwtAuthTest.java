@@ -38,7 +38,7 @@ public class JwtAuthTest {
     public void testAccessWithInvalidToken() throws Exception {
         mockMvc.perform(get("/api/user/id/1")
                         .header("Authorization", "Bearer invalid.token.here"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
