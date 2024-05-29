@@ -1,0 +1,14 @@
+FROM jenkins/jenkins:lts
+LABEL authors="bennysun"
+
+USER root
+RUN apt-get update && apt-get install -y maven docker.io sudo
+RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+USER jenkins
+RUN jenkins-plugin-cli --plugins \
+    git \
+    docker-plugin \
+    docker-workflow \
+    maven-plugin \
+    locale

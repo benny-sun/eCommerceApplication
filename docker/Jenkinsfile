@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone from Github') {
+            steps {
+                git branch: 'main', url: 'https://github.com/benny-sun/eCommerceApplication.git'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'sudo mvn clean test'
+            }
+        }
+        stage('Compile and Package') {
+            steps {
+                sh 'sudo mvn clean package -DskipTests'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // create temp directory for creating docker image
+                    def tempDir = 'docker-build-context'
+                    sh "sudo mkdir -p ${tempDir}"
+
+                    // copy files to temp directory
+                    sh "sudo cp target/ec-app-demo.war ${tempDir}/"
+                    sh "sudo cp EcDockerfile ${tempDir}/Dockerfile"
+
+                    // build docker image
+                    sh "sudo docker build -t ec-app-demo:latest ${tempDir}"
+
+                    // purge temp directory
+                    sh "sudo rm -rf ${tempDir}"
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    // stop and remove container if exists
+                    sh """
+                    if [ \$(sudo docker ps -a -q -f name=ec-app-demo) ]; then
+                        docker rm -f ec-app-demo
+                    fi
+                    """
+
+                    // run ec-app-demo docker container
+                    sh "sudo docker run -d --name ec-app-demo -p 9001:8080 ec-app-demo:latest"
+                }
+            }
+        }
+    }
+}

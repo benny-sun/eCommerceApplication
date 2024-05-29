@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: JenkinsDockerfile
+    container_name: jenkins
+    privileged: true
+    ports:
+      - "9000:8080"
+      - "50000:50000"
+    user: root # grant permission to access workspace
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock  # control Docker Host
+    environment:
+      JAVA_OPTS: "-Djenkins.install.runSetupWizard=false" # skip default setup wizard
