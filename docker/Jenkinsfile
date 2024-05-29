@@ -21,12 +21,12 @@ pipeline {
             steps {
                 script {
                     // create temp directory for creating docker image
-                    def tempDir = 'docker-build-context'
+                    def tempDir = 'docker/docker-build-context'
                     sh "sudo mkdir -p ${tempDir}"
 
                     // copy files to temp directory
                     sh "sudo cp target/ec-app-demo.war ${tempDir}/"
-                    sh "sudo cp EcDockerfile ${tempDir}/Dockerfile"
+                    sh "sudo cp docker/EcDockerfile ${tempDir}/Dockerfile"
 
                     // build docker image
                     sh "sudo docker build -t ec-app-demo:latest ${tempDir}"
