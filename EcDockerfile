@@ -1,0 +1,4 @@
+FROM openjdk:8-jdk-alpine
+COPY ec-app-demo.war /app/ec-app-demo.war
+WORKDIR /app
+ENTRYPOINT ["java", "-jar", "ec-app-demo.war"]
